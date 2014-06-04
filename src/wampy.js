@@ -14,7 +14,20 @@
  *
  */
 
-;(function(window, undefined) {
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([], factory);
+    } else if (typeof exports === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory();
+    } else {
+        // Browser globals (root is window)
+        root.Wampy = factory();
+  }
+}(this, function (undefined) {
 
 	var WAMP_SPEC = {
 		TYPE_ID_WELCOME: 0,
@@ -46,7 +59,7 @@
 			path = url[0] === '/' ? url : '/' + url;
 			return scheme + window.location.hostname + port + path;
 		}
-	};
+	}
 
 	function generateId () {
 		var keyChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
@@ -58,7 +71,7 @@
 			key += keyChars.charAt(Math.floor(Math.random() * l));
 		}
 		return key;
-	};
+	}
 
 	function getWebSocket (url, protocols) {
 		var parsedUrl = getServerUrl(url);
@@ -80,7 +93,7 @@
 		} else {
 			return null;
 		}
-	};
+	}
 
 	/**
 	 * Prefixes table object
@@ -97,7 +110,7 @@
 	prefixMap.prototype.set = function (prefix, uri) {
 		this._pref2uri[prefix] = uri;
 		this._uri2pref[prefix] = uri;
-	}
+	};
 
 	prefixMap.prototype.remove = function (prefix) {
 		if (this._pref2uri[prefix]) {
@@ -392,13 +405,13 @@
 				break;
 			case WAMP_SPEC.TYPE_ID_CALLRESULT:
 				if (this._calls[data[1]] && this._calls[data[1]].callRes) {
-					this._calls[data[1]]['callRes'](data[2]);
+					this._calls[data[1]].callRes(data[2]);
 				}
 				break;
 			case WAMP_SPEC.TYPE_ID_CALLERROR:
 				if (this._calls[data[1]] && this._calls[data[1]].callErr) {
 					// I don't think client is interested in URI of error
-					this._calls[data[1]]['callErr'](data[3], data[4]);
+					this._calls[data[1]].callErr(data[3], data[4]);
 				}
 				break;
 			case WAMP_SPEC.TYPE_ID_EVENT:
@@ -586,6 +599,5 @@
 		return this;
 	};
 
-	window.Wampy = Wampy;
-
-})(window);
+    return Wampy;
+}));
