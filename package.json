@@ -1,0 +1,19 @@
+{
+  "name": "wampy.js",
+  "version": "0.0.0",
+  "description": "wampy.js ========",
+  "main": "src/wamp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/banterchat/wampy.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/banterchat/wampy.js/issues"
+  },
+  "homepage": "https://github.com/banterchat/wampy.js"
+}
